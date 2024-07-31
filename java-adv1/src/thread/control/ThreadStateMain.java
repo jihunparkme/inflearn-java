@@ -1,5 +1,7 @@
 package thread.control;
 
+import util.ThreadUtils;
+
 import static util.MyLogger.log;
 
 public class ThreadStateMain {
@@ -10,10 +12,10 @@ public class ThreadStateMain {
 
         log("myThread.start()");
         thread.start();
-        Thread.sleep(1000);
+        ThreadUtils.sleep(1000);
 
         log("myThread.state3 = " + thread.getState()); // (3) TIMED_WAITING (Thread.sleep())
-        Thread.sleep(4000);
+        ThreadUtils.sleep(4000);
 
         log("myThread.state5 = " + thread.getState()); // (5) TERMINATED
         log("end");
@@ -21,19 +23,15 @@ public class ThreadStateMain {
 
     static class MyRunnable implements Runnable {
         public void run() {
-            try {
-                log("start");
-                log("myThread.state2 = " + Thread.currentThread().getState()); // (2) RUNNABLE
+            log("start");
+            log("myThread.state2 = " + Thread.currentThread().getState()); // (2) RUNNABLE
 
-                log("sleep() start");
-                Thread.sleep(3000);
-                log("sleep() end");
+            log("sleep() start");
+            ThreadUtils.sleep(3000);
+            log("sleep() end");
 
-                log("myThread.state4 = " + Thread.currentThread().getState()); // (4) RUNNABLE
-                log("end");
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            log("myThread.state4 = " + Thread.currentThread().getState()); // (4) RUNNABLE
+            log("end");
         }
     }
 }
