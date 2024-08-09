@@ -35,8 +35,12 @@ public class MyPrinterV1 {
 
         @Override
         public void run() {
+            /**
+             * CPU에서 while, if 로직이 계속 반복 수행하여 많은 CPU 자원을 사용
+             */
             while (!Thread.interrupted()) {
                 if (jobQueue.isEmpty()) {
+                    Thread.yield(); // 작업이 비어있으면 다른 스레드에 작업을 양보
                     continue;
                 }
 
