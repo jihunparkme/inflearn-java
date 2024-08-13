@@ -26,11 +26,11 @@ public class SyncTest1Main {
     static class Counter {
         private int count = 0;
 
-        public void increment() {
+        public synchronized void increment() {
             count = count + 1;
         }
 
-        public int getCount() {
+        public synchronized int getCount() {
             return count;
         }
     }
