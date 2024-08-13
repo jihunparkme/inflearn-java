@@ -12,7 +12,7 @@ public class BankAccountV2 implements BankAccount {
     }
 
     @Override
-    public boolean withdraw(int amount) {
+    public synchronized boolean withdraw(int amount) {
         log("거래 시작: " + getClass().getSimpleName());
 
         log("[검증 시작] 출금액: " + amount + ", 잔액: " + this.balance);
@@ -31,7 +31,7 @@ public class BankAccountV2 implements BankAccount {
     }
 
     @Override
-    public int getBalance() {
+    public synchronized int getBalance() {
         return this.balance;
     }
 }
