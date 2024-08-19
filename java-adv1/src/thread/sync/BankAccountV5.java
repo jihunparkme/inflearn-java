@@ -20,11 +20,11 @@ public class BankAccountV5 implements BankAccount {
     public boolean withdraw(int amount) {
         log("거래 시작: " + getClass().getSimpleName());
 
-        /**
-         * ReentrantLock 을 활용한 락
-         * Lock 인터페이스와 ReentrantLock 이 제공하는 기능
-         */
-        lock.lock();
+        if (!lock.tryLock()) {
+            log("[진입 실패] 이미 처리중인 작업이 있습니다.");
+            return false;
+        }
+
         try {
             log("[검증 시작] 출금액: " + amount + ", 잔액: " + this.balance);
             if (this.balance < amount) {

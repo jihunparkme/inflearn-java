@@ -6,20 +6,19 @@ import static util.ThreadUtils.sleep;
 public class BankMain {
 
     /**
-     * [       t1] 거래 시작: BankAccountV4
-     * [       t2] 거래 시작: BankAccountV4
+     * [       t1] 거래 시작: BankAccountV5
+     * [       t2] 거래 시작: BankAccountV5
+     * [       t2] [진입 실패] 이미 처리중인 작업이 있습니다.
      * [       t1] [검증 시작] 출금액: 800, 잔액: 1000
      * [       t1] [검증 완료] 출금액: 800, 잔액: 1000
      * [     main] t1 state: TIMED_WAITING
-     * [     main] t2 state: WAITING
+     * [     main] t2 state: TERMINATED
      * [       t1] [출금 완료] 출금액: 800, 변경 잔액: 200
      * [       t1] 거래 종료
-     * [       t2] [검증 시작] 출금액: 800, 잔액: 200
-     * [       t2] [검증 실패] 출금액: 800, 잔액: 200
      * [     main] 최종 잔액: 200
      */
     public static void main(String[] args) throws InterruptedException {
-        BankAccount account = new BankAccountV4(1000);
+        BankAccount account = new BankAccountV5(1000);
 
         Thread t1 = new Thread(new WithdrawTask(account, 800), "t1");
         Thread t2 = new Thread(new WithdrawTask(account, 800), "t2");
