@@ -1,5 +1,6 @@
 package thread.sync;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -20,9 +21,14 @@ public class BankAccountV6 implements BankAccount {
     public boolean withdraw(int amount) {
         log("거래 시작: " + getClass().getSimpleName());
 
-        if (!lock.tryLock()) {
-            log("[진입 실패] 이미 처리중인 작업이 있습니다.");
-            return false;
+        try {
+            // 내부에서는 LockSupport.parkNanos(time) 호출
+            if (!lock.tryLock(500, TimeUnit.MILLISECONDS)) {
+                log("[진입 실패] 이미 처리중인 작업이 있습니다.");
+                return false;
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
         try {
