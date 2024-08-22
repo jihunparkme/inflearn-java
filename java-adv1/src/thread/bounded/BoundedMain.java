@@ -10,18 +10,18 @@ public class BoundedMain {
 
     public static void main(String[] args) {
         // 1. BoundedQueue 선택
-        BoundedQueue queue = new BoundedQueueV3(2);
+        BoundedQueue queue = new BoundedQueueV4(2);
 
         // 2. 생산자, 소비자 실행 순서 선택, 반드시 하나만 선택!
         /**
-         * [     main] == [생산자 먼저 실행] 시작, BoundedQueueV3 ==
+         * [     main] == [생산자 먼저 실행] 시작, BoundedQueueV4 ==
          *
          * [     main] 생산자 시작
          * [producer1] [생산 시도] data1 -> []
-         * [producer1] [put] 생산자 데이터 저장, notify() 호출
+         * [producer1] [put] 생산자 데이터 저장, signal() 호출
          * [producer1] [생산 완료] data1 -> [data1]
          * [producer2] [생산 시도] data2 -> [data1]
-         * [producer2] [put] 생산자 데이터 저장, notify() 호출
+         * [producer2] [put] 생산자 데이터 저장, signal() 호출
          * [producer2] [생산 완료] data2 -> [data1, data2]
          * [producer3] [생산 시도] data3 -> [data1, data2]
          * [producer3] [put] 큐가 가득 참, 생산자 대기
@@ -33,16 +33,16 @@ public class BoundedMain {
          *
          * [     main] 소비자 시작
          * [consumer1] [소비 시도] ? <- [data1, data2]
-         * [consumer1] [take] 소비자 데이터 획득, notify() 호출
+         * [consumer1] [take] 소비자 데이터 획득, signal() 호출
          * [producer3] [put] 생산자 깨어남
          * [consumer1] [소비 완료] data1 <- [data2]
-         * [producer3] [put] 생산자 데이터 저장, notify() 호출
+         * [producer3] [put] 생산자 데이터 저장, signal() 호출
          * [producer3] [생산 완료] data3 -> [data2, data3]
          * [consumer2] [소비 시도] ? <- [data2, data3]
-         * [consumer2] [take] 소비자 데이터 획득, notify() 호출
+         * [consumer2] [take] 소비자 데이터 획득, signal() 호출
          * [consumer2] [소비 완료] data2 <- [data3]
          * [consumer3] [소비 시도] ? <- [data3]
-         * [consumer3] [take] 소비자 데이터 획득, notify() 호출
+         * [consumer3] [take] 소비자 데이터 획득, signal() 호출
          * [consumer3] [소비 완료] data3 <- []
          *
          * [     main] 현재 상태 출력, 큐 데이터: []
@@ -52,11 +52,12 @@ public class BoundedMain {
          * [     main] consumer1: TERMINATED
          * [     main] consumer2: TERMINATED
          * [     main] consumer3: TERMINATED
-         * [     main] == [생산자 먼저 실행] 종료, BoundedQueueV3 ==
+         *
+         * [     main] == [생산자 먼저 실행] 종료, BoundedQueueV4 ==
          */
-        producerFirst(queue); // 생산자 먼저 실행
+//        producerFirst(queue); // 생산자 먼저 실행
         /**
-         * [     main] == [소비자 먼저 실행] 시작, BoundedQueueV3 ==
+         * [     main] == [소비자 먼저 실행] 시작, BoundedQueueV4 ==
          *
          * [     main] 소비자 시작
          * [consumer1] [소비 시도] ? <- []
@@ -73,26 +74,26 @@ public class BoundedMain {
          *
          * [     main] 생산자 시작
          * [producer1] [생산 시도] data1 -> []
-         * [producer1] [put] 생산자 데이터 저장, notify() 호출
+         * [producer1] [put] 생산자 데이터 저장, signal() 호출
          * [consumer1] [take] 소비자 깨어남
          * [producer1] [생산 완료] data1 -> [data1]
-         * [consumer1] [take] 소비자 데이터 획득, notify() 호출
+         * [consumer1] [take] 소비자 데이터 획득, signal() 호출
          * [consumer2] [take] 소비자 깨어남
          * [consumer1] [소비 완료] data1 <- []
          * [consumer2] [take] 큐에 데이터가 없음, 소비자 대기
          * [producer2] [생산 시도] data2 -> []
-         * [producer2] [put] 생산자 데이터 저장, notify() 호출
+         * [producer2] [put] 생산자 데이터 저장, signal() 호출
          * [producer2] [생산 완료] data2 -> [data2]
          * [consumer3] [take] 소비자 깨어남
-         * [consumer3] [take] 소비자 데이터 획득, notify() 호출
+         * [consumer3] [take] 소비자 데이터 획득, signal() 호출
          * [consumer3] [소비 완료] data2 <- []
          * [consumer2] [take] 소비자 깨어남
          * [consumer2] [take] 큐에 데이터가 없음, 소비자 대기
          * [producer3] [생산 시도] data3 -> []
-         * [producer3] [put] 생산자 데이터 저장, notify() 호출
-         * [consumer2] [take] 소비자 깨어남
-         * [consumer2] [take] 소비자 데이터 획득, notify() 호출
+         * [producer3] [put] 생산자 데이터 저장, signal() 호출
          * [producer3] [생산 완료] data3 -> [data3]
+         * [consumer2] [take] 소비자 깨어남
+         * [consumer2] [take] 소비자 데이터 획득, signal() 호출
          * [consumer2] [소비 완료] data3 <- []
          *
          * [     main] 현재 상태 출력, 큐 데이터: []
@@ -102,9 +103,10 @@ public class BoundedMain {
          * [     main] producer1: TERMINATED
          * [     main] producer2: TERMINATED
          * [     main] producer3: TERMINATED
-         * [     main] == [소비자 먼저 실행] 종료, BoundedQueueV3 ==
+         *
+         * [     main] == [소비자 먼저 실행] 종료, BoundedQueueV4 ==
          */
-//        consumerFirst(queue); // 소비자 먼저 실행
+        consumerFirst(queue); // 소비자 먼저 실행
     }
 
     private static void producerFirst(BoundedQueue queue) {
