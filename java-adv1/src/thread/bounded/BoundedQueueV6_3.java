@@ -2,6 +2,7 @@ package thread.bounded;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import static util.MyLogger.log;
 
@@ -14,15 +15,23 @@ public class BoundedQueueV6_3 implements BoundedQueue {
     }
 
     /**
-     * 즉시 반환
+     * 시간 대기
      */
     public void put(String data) {
-        boolean result = queue.offer(data);
-        log("저장 시도 결과 = " + result);
+        try {
+            boolean result = queue.offer(data, 1, TimeUnit.NANOSECONDS);
+            log("저장 시도 결과 = " + result);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String take() {
-        return queue.poll();
+        try {
+            return queue.poll(2, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
