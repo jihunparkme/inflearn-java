@@ -10,22 +10,20 @@ public class BoundedMain {
 
     public static void main(String[] args) {
         // 1. BoundedQueue 선택
-        BoundedQueue queue = new BoundedQueueV6_3(2);
+        BoundedQueue queue = new BoundedQueueV6_4(2);
 
         // 2. 생산자, 소비자 실행 순서 선택, 반드시 하나만 선택!
         /**
-         * [     main] == [생산자 먼저 실행] 시작, BoundedQueueV6_3 ==
+         * [     main] == [생산자 먼저 실행] 시작, BoundedQueueV6_4 ==
          *
          * [     main] 생산자 시작
          * [producer1] [생산 시도] data1 -> []
-         * [producer1] 저장 시도 결과 = true
          * [producer1] [생산 완료] data1 -> [data1]
          * [producer2] [생산 시도] data2 -> [data1]
-         * [producer2] 저장 시도 결과 = true
          * [producer2] [생산 완료] data2 -> [data1, data2]
          * [producer3] [생산 시도] data3 -> [data1, data2]
-         * [producer3] 저장 시도 결과 = false
-         * [producer3] [생산 완료] data3 -> [data1, data2]
+         *
+         * Exception in thread "producer3" java.lang.IllegalStateException: Queue full
          *
          * [     main] 현재 상태 출력, 큐 데이터: [data1, data2]
          * [     main] producer1: TERMINATED
@@ -39,46 +37,44 @@ public class BoundedMain {
          * [consumer2] [소비 완료] data2 <- []
          * [consumer3] [소비 시도] ? <- []
          *
+         * Exception in thread "consumer3" java.util.NoSuchElementException
+         *
          * [     main] 현재 상태 출력, 큐 데이터: []
          * [     main] producer1: TERMINATED
          * [     main] producer2: TERMINATED
          * [     main] producer3: TERMINATED
          * [     main] consumer1: TERMINATED
          * [     main] consumer2: TERMINATED
-         * [     main] consumer3: TIMED_WAITING
-         * [     main] == [생산자 먼저 실행] 종료, BoundedQueueV6_3 ==
-         *
-         * [consumer3] [소비 완료] null <- []
+         * [     main] consumer3: TERMINATED
+         * [     main] == [생산자 먼저 실행] 종료, BoundedQueueV6_4 ==
          */
 //        producerFirst(queue); // 생산자 먼저 실행
         /**
-         * [     main] == [소비자 먼저 실행] 시작, BoundedQueueV6_3 ==
+         * [     main] == [소비자 먼저 실행] 시작, BoundedQueueV6_4 ==
          *
          * [     main] 소비자 시작
          * [consumer1] [소비 시도] ? <- []
+         * Exception in thread "consumer1" java.util.NoSuchElementException
          * [consumer2] [소비 시도] ? <- []
+         * Exception in thread "consumer2" java.util.NoSuchElementException
          * [consumer3] [소비 시도] ? <- []
+         * Exception in thread "consumer3" java.util.NoSuchElementException
          *
          * [     main] 현재 상태 출력, 큐 데이터: []
-         * [     main] consumer1: TIMED_WAITING
-         * [     main] consumer2: TIMED_WAITING
-         * [     main] consumer3: TIMED_WAITING
+         * [     main] consumer1: TERMINATED
+         * [     main] consumer2: TERMINATED
+         * [     main] consumer3: TERMINATED
          *
          * [     main] 생산자 시작
          * [producer1] [생산 시도] data1 -> []
-         * [consumer1] [소비 완료] data1 <- []
-         * [producer1] 저장 시도 결과 = true
-         * [producer1] [생산 완료] data1 -> []
-         * [producer2] [생산 시도] data2 -> []
-         * [producer2] 저장 시도 결과 = true
-         * [consumer2] [소비 완료] data2 <- []
-         * [producer2] [생산 완료] data2 -> []
-         * [producer3] [생산 시도] data3 -> []
-         * [producer3] 저장 시도 결과 = true
-         * [consumer3] [소비 완료] data3 <- []
-         * [producer3] [생산 완료] data3 -> []
+         * [producer1] [생산 완료] data1 -> [data1]
+         * [producer2] [생산 시도] data2 -> [data1]
+         * [producer2] [생산 완료] data2 -> [data1, data2]
+         * [producer3] [생산 시도] data3 -> [data1, data2]
          *
-         * [     main] 현재 상태 출력, 큐 데이터: []
+         * Exception in thread "producer3" java.lang.IllegalStateException: Queue full
+         *
+         * [     main] 현재 상태 출력, 큐 데이터: [data1, data2]
          * [     main] consumer1: TERMINATED
          * [     main] consumer2: TERMINATED
          * [     main] consumer3: TERMINATED
@@ -86,7 +82,7 @@ public class BoundedMain {
          * [     main] producer2: TERMINATED
          * [     main] producer3: TERMINATED
          *
-         * [     main] == [소비자 먼저 실행] 종료, BoundedQueueV6_3 ==
+         * [     main] == [소비자 먼저 실행] 종료, BoundedQueueV6_4 ==
          */
         consumerFirst(queue); // 소비자 먼저 실행
     }
