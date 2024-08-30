@@ -11,6 +11,7 @@ public class IncrementThreadMain {
 
     public static void main(String[] args) throws InterruptedException {
         test(new BasicInteger());
+        test(new VolatileInteger());  // notEquals(1000)
     }
 
     private static void test(IncrementInteger incrementInteger) throws InterruptedException {
@@ -31,6 +32,6 @@ public class IncrementThreadMain {
         }
 
         int result = incrementInteger.get();
-        System.out.println(incrementInteger.getClass().getSimpleName() + " result: " + result); // notEquals(1000)
+        System.out.println(incrementInteger.getClass().getSimpleName() + " result: " + result);
     }
 }
