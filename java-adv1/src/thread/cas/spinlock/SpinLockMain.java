@@ -7,15 +7,17 @@ public class SpinLockMain {
     /**
      * [ Thread-2] 락 획득 시도
      * [ Thread-1] 락 획득 시도
-     * [ Thread-1] 락 획득 완료
      * [ Thread-2] 락 획득 완료
-     * [ Thread-1] 비즈니스 로직 실행
+     * [ Thread-1] 락 획득 실패 - 스핀 대기
      * [ Thread-2] 비즈니스 로직 실행
+     * [ Thread-1] 락 획득 실패 - 스핀 대기
      * [ Thread-2] 락 반납 완료
+     * [ Thread-1] 락 획득 완료
+     * [ Thread-1] 비즈니스 로직 실행
      * [ Thread-1] 락 반납 완료
      */
     public static void main(String[] args) {
-        SpinLockBad spinLock = new SpinLockBad();
+        SpinLock spinLock = new SpinLock();
 
         Runnable task = () -> {
             spinLock.lock();
