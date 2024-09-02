@@ -21,7 +21,7 @@ public class BasicList implements SimpleList {
     }
 
     @Override
-    public void add(Object e) {
+    public void add(Object e) { // 원자적이지 않은 연산
         elementData[size] = e;
         sleep(100);
         size++;
