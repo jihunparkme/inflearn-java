@@ -16,24 +16,24 @@ public class SyncList implements SimpleList {
     }
 
     @Override
-    public int size() {
+    public synchronized int size() {
         return size;
     }
 
     @Override
-    public void add(Object e) { // 원자적이지 않은 연산
+    public synchronized void add(Object e) { // 원자적이지 않은 연산
         elementData[size] = e;
         sleep(100);
         size++;
     }
 
     @Override
-    public Object get(int index) {
+    public synchronized Object get(int index) {
         return elementData[index];
     }
 
     @Override
-    public String toString() {
+    public synchronized String toString() {
         return Arrays.toString(
                 Arrays.copyOf(elementData, size)) + ", size = " + size + ", capacity = " + elementData.length;
     }
