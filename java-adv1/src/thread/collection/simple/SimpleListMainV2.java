@@ -2,20 +2,20 @@ package thread.collection.simple;
 
 import thread.collection.simple.list.BasicList;
 import thread.collection.simple.list.SimpleList;
-import thread.collection.simple.list.SyncList;
+import thread.collection.simple.list.SyncProxyList;
 
 import static util.MyLogger.log;
 
 public class SimpleListMainV2 {
 
     /**
-     * [     main] SyncList
+     * [     main] SyncProxyList
      * [ Thread-1] Thread-1: list.add(A)
      * [ Thread-2] Thread-2: list.add(B)
-     * [     main] [A, B], size = 2, capacity = 5
+     * [     main] [A, B], size = 2, capacity = 5 by SyncProxyList
      */
     public static void main(String[] args) throws InterruptedException {
-        test(new SyncList());
+        test(new SyncProxyList(new BasicList()));
     }
 
     private static void test(SimpleList list) throws InterruptedException {
