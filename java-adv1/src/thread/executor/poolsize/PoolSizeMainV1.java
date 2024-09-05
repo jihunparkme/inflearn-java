@@ -16,23 +16,23 @@ public class PoolSizeMainV1 {
      * [     main] task1 -> [pool=1, active=1, queuedTasks = 0, completedTasks = 0]
      * [pool-1-thread-2] task2 시작
      * [     main] task2 -> [pool=2, active=2, queuedTasks = 0, completedTasks = 0]
-     * [pool-1-thread-1] task3 시작
-     * [     main] task3 -> [pool=2, active=2, queuedTasks = 1, completedTasks = 0]
-     * [pool-1-thread-2] task4 시작
-     * [     main] task4 -> [pool=2, active=2, queuedTasks = 2, completedTasks = 0]
      * [pool-1-thread-3] task5 시작 => Queue 가 가득 차면, max 사이즈까 추가 스레드를 생성해서 수행
-     * [     main] task5 -> [pool=3, active=3, queuedTasks = 2, completedTasks = 0]
+     * [     main] task3 -> [pool=2, active=2, queuedTasks = 1, completedTasks = 0]
      * [pool-1-thread-4] task6 시작
+     * [     main] task4 -> [pool=2, active=2, queuedTasks = 2, completedTasks = 0]
+     * [pool-1-thread-1] task3 시작
+     * [     main] task5 -> [pool=3, active=3, queuedTasks = 2, completedTasks = 0]
+     * [pool-1-thread-2] task4 시작
      * [     main] task6 -> [pool=4, active=4, queuedTasks = 2, completedTasks = 0]
      *
      * [     main] task7 실행 거절 예외 발생: java.util.concurrent.RejectedExecutionException: Task thread.executor.RunnableTask@3abbfa04 rejected from java.util.concurrent.ThreadPoolExecutor@7f690630[Running, pool size = 4, active threads = 4, queued tasks = 2, completed tasks = 0]
 
      * [pool-1-thread-1] task1 완료
      * [pool-1-thread-2] task2 완료
-     * [pool-1-thread-1] task3 완료
-     * [pool-1-thread-2] task4 완료
      * [pool-1-thread-3] task5 완료
      * [pool-1-thread-4] task6 완료
+     * [pool-1-thread-1] task3 완료
+     * [pool-1-thread-2] task4 완료
      *
      * [     main] == 작업 수행 완료 ==
      * [     main] [pool=4, active=0, queuedTasks=0, completedTasks=6]
