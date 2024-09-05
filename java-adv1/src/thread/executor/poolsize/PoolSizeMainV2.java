@@ -17,8 +17,8 @@ public class PoolSizeMainV2 {
      * 큐 사이즈도 제한이 없어서 작업을 많이 담아두어도 문제가 없음
      *
      * > 주의
-     * 점진적인 사용자 확대
-     * 갑작스런 요청 증가
+     * 점진적인 사용자 확대 (느린 응답)
+     * 갑작스런 요청 증가 (느린 응답)
      *
      * [     main] pool 생성
      * [     main] [pool=0, active=0, queuedTasks=0, completedTasks=0]
